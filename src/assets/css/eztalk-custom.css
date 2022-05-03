@@ -1,0 +1,54 @@
+.eztalk-main-title {
+
+  color: #505050 !important;
+  font-size: 24px !important;
+  font-weight: 900;
+  padding-left: 20px;
+  letter-spacing: 1px;
+}
+
+.eztalk-dropdown-header {
+  background-color: #F0F0F0;
+  color: #8A8A8A;
+  font-size: 11px;
+}
+
+.dropdown-menu .eztalk-dropdown-item {
+  color: #66615b;
+  font-size: 14px;
+  padding: 10px 45px 10px 15px;
+  clear: both;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+}
+
+.eztalk-outline-border {
+  border: 1px solid;
+  border-color: #DEBEBA !important;
+}
+
+.eztalk-card-body {
+  /* box-shadow: F 6px 10px -4px; */
+  background-color: hsl(60, 35%, 91%);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 20px 20px 20px 20px !important;
+}
+
+
+.eztalk-input {
+  padding: 10px 5px 10px 5px !important;
+}
+
+.eztalk-input .eztalk-focus {
+  border: 1px solid #EABA8A;
+  padding: 10px 5px 10px 5px !important;
+}
+
+.eztalk-side-hr {
+  margin:  10px 20px 10px 15px ;
+  border-bottom: 0.5px solid #E0E0E0;
+}
+
+.eztalk-profile
