@@ -36,7 +36,7 @@ export default class Campaign extends React.Component {
       })
   }
 
-  handleDelete(e) {
+  clickCampaign(e) {
     console.log(e);
   }
 
@@ -48,7 +48,7 @@ export default class Campaign extends React.Component {
           <ul>
             {
               this.state.campaigns.map(campaign =>
-                <li key={campaign.campaignNum} onClick={() => this.handleDelete(campaign.campaignNum)}>Delete{campaign.campaignDesc}, {campaign.startDate}, {campaign.endDate}</li>
+                <li key={campaign.campaignNum} onClick={() => this.clickCampaign(campaign.campaignNum)}>Delete{campaign.campaignDesc}, {campaign.startDate}, {campaign.endDate}</li>
               )
             }
           </ul>
