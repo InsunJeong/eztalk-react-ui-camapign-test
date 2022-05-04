@@ -96,7 +96,7 @@ export default class Campaign extends React.Component {
           </Row>
           <Link to='CampaignInsert'><button className="btn-round btn btn-primary">캠페인등록</button></Link>
           <Routes>
-            <Route path="CampaignInsert" index element={<CampaignInsert />} key="home" />
+            <Route path="/CampaignInsert" index element={<CampaignInsert />} key="home" />
           </Routes>
         </div>
       </>

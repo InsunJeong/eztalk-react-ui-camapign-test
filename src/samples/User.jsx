@@ -287,6 +287,7 @@ function Home() {
                         <label>Postal Code</label>
                         <Input placeholder="ZIP Code" type="number" />
                       </FormGroup>
+                      
                     </Col>
                   </Row>
                   <Row>

@@ -21,6 +21,8 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from "date-fns/esm/locale";
+import Campaign from "./Campaign";
+import { useNavigate  } from 'react-router-dom';
 
 // reactstrap components
 import {
@@ -61,6 +63,7 @@ function CalendarTest() {
 };
 
 
+
 export default class CamapaignInsert extends React.Component {
   constructor(props) {
     super(props);
@@ -76,6 +79,11 @@ export default class CamapaignInsert extends React.Component {
     }
   }
 
+  movetoList = () => {
+    console.log('movetoList');
+    const navigateTo = useNavigate();
+    navigateTo('/Camapaign');
+  }
 
   handleCampaignTitleChange = (event) => {
     const campaignTitle = event.target.value
@@ -119,6 +127,7 @@ export default class CamapaignInsert extends React.Component {
     this.setState({ representativeId: representativeId })
   }
 
+
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -133,7 +142,7 @@ export default class CamapaignInsert extends React.Component {
       representativeId,
     } = this.state
 
-    console.log(campaignTitle)
+    console.log(campaignTitle);
 
     axios.post("http://localhost:8080/api/insertCampaign", {
       campaignTitle: campaignTitle,
@@ -146,6 +155,7 @@ export default class CamapaignInsert extends React.Component {
       representativeId: representativeId
     })
       .then(res => {
+        {this.movetoList};
         console.log(res);
         console.log(res.data);
       })

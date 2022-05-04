@@ -65,7 +65,7 @@ var routes = [
     needAuth : true,
   },
   {
-    path: "/campaigninsert",
+    path: "/campaigns/CampaignInsert",
     name: "캠페인 등록",
     icon: "nc-icon nc-spaceship",
     component: CampaignInsert,
