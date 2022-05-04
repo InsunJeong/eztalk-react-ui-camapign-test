@@ -21,6 +21,7 @@ import Community        from "./Community.jsx";
 import TemporaryChatroom from "./TemporaryChatroom.jsx";
 import RegularChatroom  from "./RegularChatroom.jsx";
 import Campaign         from "./Campaign.jsx";
+import CampaignInsert   from "./CampaignInsert.jsx";
 import CommunityAccount from "./CommunityAccount.jsx";
 import CommunityAdmin   from "./CommunityAdmin.jsx";
 
@@ -37,7 +38,7 @@ var routes = [
     icon: "nc-icon nc-layout-11",
     component: Community,
     layout: "/menu",
-    needAuth : false, 
+    needAuth : false,
   },
   {
     path: "/temporary-chatroom",
@@ -45,7 +46,7 @@ var routes = [
     icon: "nc-icon nc-sound-wave",
     component: TemporaryChatroom,
     layout: "/menu",
-    needAuth : true, 
+    needAuth : true,
   },
   {
     path: "/regular-chatroom",
@@ -53,7 +54,7 @@ var routes = [
     icon: "nc-icon nc-chat-33",
     component: RegularChatroom,
     layout: "/menu",
-    needAuth : true, 
+    needAuth : true,
   },
   {
     path: "/campaigns",
@@ -61,7 +62,15 @@ var routes = [
     icon: "nc-icon nc-spaceship",
     component: Campaign,
     layout: "/menu",
-    needAuth : true, 
+    needAuth : true,
+  },
+  {
+    path: "/campaigninsert",
+    name: "캠페인 등록",
+    icon: "nc-icon nc-spaceship",
+    component: CampaignInsert,
+    layout: "/menu",
+    needAuth : true,
   },
   {
     path: "/community-accounts",
@@ -69,7 +78,7 @@ var routes = [
     icon: "nc-icon nc-money-coins",
     component: CommunityAccount,
     layout: "/menu",
-    needAuth : true, 
+    needAuth : true,
   },
   {
     path: "/community-admin",
@@ -77,8 +86,8 @@ var routes = [
     icon: "nc-icon nc-settings",
     component: CommunityAdmin,
     layout: "/menu",
-    needAuth : true, 
-  },  
+    needAuth : true,
+  },
   {
     path: "",
     name: "",

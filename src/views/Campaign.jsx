@@ -27,6 +27,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { Link, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import CampaignInsert from "./CampaignInsert";
 
 // react plugin used to create charts
 
@@ -45,8 +47,12 @@ export default class Campaign extends React.Component {
       })
   }
 
-  handleDelete(e) {
+  onClickCampaign(e) {
     console.log(e);
+  }
+  insertCampaign = () => {
+    console.log("etst");
+    // <Link to="CamapaignInsert"/>
   }
 
   render() {
@@ -73,7 +79,7 @@ export default class Campaign extends React.Component {
                     <tbody>
                       {/* 데이터 저장 state 값 출력 */}
                       {this.state.campaigns.map((campaign) => (
-                        <tr key={campaign.campaignNum} onClick={() => this.handleDelete(campaign.campaignNum)}>
+                        <tr key={campaign.campaignNum} onClick={() => this.onClickCampaign(campaign.campaignNum)}>
                           <td>{campaign.campaignTitle}</td>
                           <td>{campaign.startDate}</td>
                           <td>{campaign.endDate}</td>
@@ -88,7 +94,10 @@ export default class Campaign extends React.Component {
               </Card>
             </Col>
           </Row>
-          <button onclick="activateLasers()">캠페인등록</button>
+          <Link to='CampaignInsert'><button className="btn-round btn btn-primary">캠페인등록</button></Link>
+          <Routes>
+            <Route path="CampaignInsert" index element={<CampaignInsert />} key="home" />
+          </Routes>
         </div>
       </>
     )
