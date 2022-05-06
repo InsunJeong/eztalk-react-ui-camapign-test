@@ -88,7 +88,7 @@ function CamapaignInsert(props) {
     return (
       <Formik
         initialValues={{
-          campaignTitle: "", campaignDesc: "", startDate: "", endDate: "", targetAmount: "", leastPayAmount: "", accountStaffId: "", representativeId: ""
+          campaignTitle: "", campaignDesc: "", startDate: new Date(), endDate: new Date(), targetAmount: "", leastPayAmount: "", accountStaffId: "", representativeId: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
@@ -135,8 +135,7 @@ function CamapaignInsert(props) {
                       name="startDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={startDate} onChange={date=>setStartDate(date)}
-                      startDate={startDate} />
+                      selected={startDate} onChange={date=>setStartDate(date)} />
                     {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
 
                   </FormGroup>
@@ -148,8 +147,7 @@ function CamapaignInsert(props) {
                       name="endDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={endDate} onChange={date=>setEndDate(date)}
-                      endDate={endDate} />
+                      selected={endDate} onChange={date=>setEndDate(date)}/>
                     {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
                   </FormGroup>
                 </Col>
