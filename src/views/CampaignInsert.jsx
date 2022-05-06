@@ -45,10 +45,11 @@ function CamapaignInsert(props) {
   //   console.log('useEffect');
   // }, [])
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   async function callServer(values, actions) {
     console.log("onSubmit values " + values);
-
 
     const {
       campaignTitle,
@@ -85,8 +86,7 @@ function CamapaignInsert(props) {
   }
 
   function CreateCampaignFormik() {
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+
 
     return (
       <Formik
@@ -104,10 +104,12 @@ function CamapaignInsert(props) {
         {props => {
           const {
             values,
+            onDateChange,
             touched,
             errors,
             dirty,
             isSubmitting,
+            setFieldValue,
             handleChange,
             handleBlur,
             handleSubmit,
@@ -138,7 +140,9 @@ function CamapaignInsert(props) {
                       name="startDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={startDate} onChange={date => setStartDate(date)} />
+                      onDate
+                      selected={values.startDate} onChange={date => setFieldValue('startDate', date)}
+                      selectsStart />
                     {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
 
                   </FormGroup>
@@ -150,7 +154,8 @@ function CamapaignInsert(props) {
                       name="endDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={endDate} onChange={date => setEndDate(date)} />
+                      selected={values.endDate} onChange={date => setFieldValue('endDate', date)}
+                      selectsEnd />
                     {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
                   </FormGroup>
                 </Col>
