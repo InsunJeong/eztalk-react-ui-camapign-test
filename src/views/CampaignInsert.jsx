@@ -21,7 +21,7 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from "date-fns/esm/locale";
-import Campaign from "./Campaign-bak";
+import Campaign from "./Campaign";
 import { useNavigate } from 'react-router-dom';
 import { useFormik, Formik, Form, Field } from 'formik';
 
@@ -44,9 +44,11 @@ function CamapaignInsert(props) {
   // useEffect(() => {
   //   console.log('useEffect');
   // }, [])
+  const navigate = useNavigate();
 
   async function callServer(values, actions) {
     console.log("onSubmit values " + values);
+
 
     const {
       campaignTitle,
@@ -72,6 +74,7 @@ function CamapaignInsert(props) {
       }).then(res => {
         console.log(res);
         console.log(res.data);
+        navigate("/menu/campaigns");
       });
     } catch (error) {
       // const { status, data } = error.response
@@ -135,7 +138,7 @@ function CamapaignInsert(props) {
                       name="startDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={startDate} onChange={date=>setStartDate(date)} />
+                      selected={startDate} onChange={date => setStartDate(date)} />
                     {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
 
                   </FormGroup>
@@ -147,7 +150,7 @@ function CamapaignInsert(props) {
                       name="endDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={endDate} onChange={date=>setEndDate(date)}/>
+                      selected={endDate} onChange={date => setEndDate(date)} />
                     {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
                   </FormGroup>
                 </Col>
