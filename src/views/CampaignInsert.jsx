@@ -22,7 +22,7 @@ import DatePicker from 'react-datepicker/dist/react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from "date-fns/esm/locale";
 import Campaign from "./Campaign";
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate, useHistory  } from 'react-router-dom';
 
 // reactstrap components
 import {
@@ -144,6 +144,8 @@ export default class CamapaignInsert extends React.Component {
 
     console.log(campaignTitle);
 
+    const history = useHistory();
+
     axios.post("http://localhost:8080/api/insertCampaign", {
       campaignTitle: campaignTitle,
       campaignDesc: campaignDesc,
@@ -155,7 +157,7 @@ export default class CamapaignInsert extends React.Component {
       representativeId: representativeId
     })
       .then(res => {
-        {this.movetoList};
+        history.push("/Campaign");
         console.log(res);
         console.log(res.data);
       })
