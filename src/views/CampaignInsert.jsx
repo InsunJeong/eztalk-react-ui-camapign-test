@@ -95,7 +95,7 @@ function CamapaignInsert(props) {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            // alert(JSON.stringify(values, null, 2));
             callServer(values);
             setSubmitting(false);
           }, 500);

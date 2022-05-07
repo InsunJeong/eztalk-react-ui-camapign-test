@@ -32,7 +32,24 @@ import CampaignInsert from "./CampaignInsert";
 
 // react plugin used to create charts
 function CampaignDetail() {
-    
+  return (
+    <>
+      <div className="content">
+        <Row>
+          <Col md="10">
+            <Card className="campaign-form">
+              <CardHeader>
+                <CardTitle tag="h5">캠페인 상세</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <CreateCampaignFormik />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
 }
 
 export default CampaignDetail;

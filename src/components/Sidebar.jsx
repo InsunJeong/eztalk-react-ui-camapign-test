@@ -64,14 +64,18 @@ function Sidebar(props) {
       <div className="sidebar-wrapper" ref={sidebar}>
         <Nav>
           {props.routes.map((prop, key) => {
-            if (prop.layout.indexOf("---")>-1) 
-               return ( 
+            if (prop.layout.indexOf("---")>-1)
+               return (
                <li>
                  <div className="eztalk-side-hr">{prop.layout}</div>
                </li>)
-            else  
+            else if (prop.layout.indexOf("link")>-1)
               return (
-              
+                <li><div></div></li>
+              )
+            else
+              return (
+
               <li
                 className={
                   activeRoute(prop.path) + (prop.pro ? " active-pro" : "")

@@ -44,6 +44,11 @@ function Campaign() {
       })
   }, [])
 
+  function moveToCampaignDetail(value) {
+    console.log("moveToCampaignDetail");
+    console.log(value);
+  }
+
   return (
     <>
       <div className="content">
@@ -66,7 +71,7 @@ function Campaign() {
                   </thead>
                   <tbody>
                     {campaigns.map((campaign) => (
-                      <tr key={campaign.campaignNum} onClick={() => this.onClickCampaign(campaign.campaignNum)}>
+                      <tr key={campaign.campaignNum} onClick={moveToCampaignDetail(campaign.campaignNum)}>
                         <td>{campaign.campaignTitle}</td>
                         <td>{campaign.startDate}</td>
                         <td>{campaign.endDate}</td>
@@ -81,10 +86,7 @@ function Campaign() {
             </Card>
           </Col>
         </Row>
-        <Link to='CampaignInsert'><button className="btn-round btn btn-primary">캠페인등록</button></Link>
-        <Routes>
-          <Route path="/CampaignInsert" index element={<CampaignInsert />} key="home" />
-        </Routes>
+        <Link to='/link/campaigns/CampaignInsert'><button className="btn-round btn btn-primary">캠페인등록</button></Link>
       </div>
     </>
   );

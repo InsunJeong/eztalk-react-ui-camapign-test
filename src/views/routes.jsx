@@ -62,15 +62,17 @@ var routes = [
     icon: "nc-icon nc-spaceship",
     component: Campaign,
     layout: "/menu",
-    needAuth : true,
+    needAuth : false,
   },
   {
     path: "/campaigns/CampaignInsert",
     name: "캠페인 등록",
     icon: "nc-icon nc-spaceship",
     component: CampaignInsert,
-    layout: "/menu",
-    needAuth : true,
+    layout: "/link",
+    needAuth : false,
+    isActive : false,
+    notVisible : "true"
   },
   {
     path: "/community-accounts",
