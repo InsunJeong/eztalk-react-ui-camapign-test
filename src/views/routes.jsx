@@ -22,6 +22,7 @@ import TemporaryChatroom from "./TemporaryChatroom.jsx";
 import RegularChatroom  from "./RegularChatroom.jsx";
 import Campaign         from "./Campaign.jsx";
 import CampaignInsert   from "./CampaignInsert.jsx";
+import CampaignDetail   from "./CampaignDetail.jsx";
 import CommunityAccount from "./CommunityAccount.jsx";
 import CommunityAdmin   from "./CommunityAdmin.jsx";
 
@@ -69,6 +70,16 @@ var routes = [
     name: "캠페인 등록",
     icon: "nc-icon nc-spaceship",
     component: CampaignInsert,
+    layout: "/link",
+    needAuth : false,
+    isActive : false,
+    notVisible : "true"
+  },
+  {
+    path: "/campaigns/CampaignDetail",
+    name: "캠페인 상세",
+    icon: "nc-icon nc-spaceship",
+    component: CampaignDetail,
     layout: "/link",
     needAuth : false,
     isActive : false,

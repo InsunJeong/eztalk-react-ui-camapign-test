@@ -16,22 +16,175 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import DatePicker from 'react-datepicker/dist/react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from "date-fns/esm/locale";
+import Campaign from "./Campaign";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useFormik, Formik, Form, Field } from 'formik';
+
+// reactstrap components
 import {
+  Button,
   Card,
   CardHeader,
   CardBody,
+  CardFooter,
   CardTitle,
-  Table,
+  FormGroup,
+  Input,
   Row,
   Col,
 } from "reactstrap";
-import { Link, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { values } from "lodash-es";
 import CampaignInsert from "./CampaignInsert";
 
 // react plugin used to create charts
-function CampaignDetail() {
+function CampaignDetail(props) {
+
+  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const campaignId = 1;
+
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log('useEffect');
+    console.log(location.state.campaignId);
+    axios.get(`http://localhost:8080/campaigns/` + location.state.campaignId)
+      .then((response) => {
+        console.log(response.data.data);
+        setCampaignList(response.data.data);
+      })
+  }, [])
+
+
+  function CreateCampaignFormik() {
+    return (
+      <Formik
+        initialValues={{
+          campaignTitle: "", campaignDesc: "", startDate: new Date(), endDate: new Date(), targetAmount: "", leastPayAmount: "", accountStaffId: "", representativeId: ""
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            // alert(JSON.stringify(values, null, 2));
+            callServer(values);
+            setSubmitting(false);
+          }, 500);
+        }}
+      >
+        {props => {
+          const {
+            values,
+            onDateChange,
+            touched,
+            errors,
+            dirty,
+            isSubmitting,
+            setFieldValue,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleReset,
+          } = props;
+          return (
+            <Form on onSubmit={handleSubmit}>
+              <Row>
+                <Col className="pr-1" md="10">
+                  <FormGroup>
+                    <label>캠페인명</label>
+                    <Input disabled type="text" name="campaignTitle" placeholder="aaaaa" value={values.campaignTitle}
+                      onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1" md="10">
+                  <FormGroup>
+                    <label>캠페인 내용</label>
+                    <Input disabled type="textarea" name="campaignDesc" placeholder="aaaaa" value={values.campaignDesc} onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+                <Col className="pl-1" md="5">
+                  <FormGroup>
+                    <label>캠페인 시작일자</label>
+                    <DatePicker
+                      disabled
+                      name="startDate"
+                      dateFormat="yyyy-MM-dd"
+                      locale={ko}
+                      selected={values.startDate} onChange={date => setFieldValue('startDate', date)} />
+                    {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
+
+                  </FormGroup>
+                </Col>
+                <Col className="pl-1" md="5">
+                  <FormGroup>
+                    <label>캠페인 종료일자</label>
+                    <DatePicker
+                      disabled
+                      name="endDate"
+                      dateFormat="yyyy-MM-dd"
+                      locale={ko}
+                      selected={values.endDate} onChange={date => setFieldValue('endDate', date)} />
+                    {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pl-1" md="5">
+                  <FormGroup>
+                    <label>목표금액</label>
+                    <Input disabled type="number" name="targetAmount" placeholder="aaaaa" value={values.targetAmount} onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+                <Col className="pr-1" md="5">
+                  <FormGroup>
+                    <label>최소 납부금액</label>
+                    <Input disabled type="number" name="leastPayAmount" placeholder="aaaaa" value={values.leastPayAmount} onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1" md="5">
+                  <FormGroup>
+                    <label>총무 ID</label>
+                    <Input disabled type="text" name="accountStaffId" placeholder="aaaaa" value={values.accountStaffId} onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+                <Col className="pr-1" md="5">
+                  <FormGroup>
+                    <label>대표 ID</label>
+                    <Input disabled type="text" name="representativeId" placeholder="aaaaa" value={values.representativeId} onChange={handleChange} />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <div className="update ml-auto mr-auto">
+                  {campaignId
+                    ? <p> <Button className="btn-round" color="primary" type="submit">수정</Button>
+                      <Button className="btn-round" color="primary" type="submit">삭제</Button>
+                      <Button className="btn-round" color="primary" type="submit">승인</Button>
+                    </p>
+                    :
+                    <p>
+                      <Button className="btn-round" color="primary" type="submit">중지</Button>
+                      <Button className="btn-round" color="primary" type="submit">취소</Button>
+                    </p>
+                  }
+                </div>
+              </Row>
+            </Form>
+          );
+        }}
+      </Formik >
+    )
+  }
+
   return (
     <>
       <div className="content">
@@ -39,7 +192,7 @@ function CampaignDetail() {
           <Col md="10">
             <Card className="campaign-form">
               <CardHeader>
-                <CardTitle tag="h5">캠페인 상세</CardTitle>
+                <CardTitle tag="h5">캠페인 등록</CardTitle>
               </CardHeader>
               <CardBody>
                 <CreateCampaignFormik />
@@ -53,3 +206,4 @@ function CampaignDetail() {
 }
 
 export default CampaignDetail;
+

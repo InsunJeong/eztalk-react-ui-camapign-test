@@ -63,7 +63,7 @@ function CamapaignInsert(props) {
     } = values;
 
     try {
-      const { data } = await axios.post('http://localhost:8080/api/insertCampaign', {
+      const { data } = await axios.post('http://localhost:8080/campaigns', {
         campaignTitle,
         campaignDesc,
         startDate,
@@ -140,9 +140,7 @@ function CamapaignInsert(props) {
                       name="startDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      onDate
-                      selected={values.startDate} onChange={date => setFieldValue('startDate', date)}
-                      selectsStart />
+                      selected={values.startDate} onChange={date => setFieldValue('startDate', date)} />
                     {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
 
                   </FormGroup>
@@ -154,8 +152,7 @@ function CamapaignInsert(props) {
                       name="endDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={values.endDate} onChange={date => setFieldValue('endDate', date)}
-                      selectsEnd />
+                      selected={values.endDate} onChange={date => setFieldValue('endDate', date)} />
                     {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
                   </FormGroup>
                 </Col>

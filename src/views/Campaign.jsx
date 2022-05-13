@@ -27,26 +27,28 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { Link, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Link, useNavigate, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import CampaignInsert from "./CampaignInsert";
+import CampaignDetail from "./CampaignDetail";
 
 // react plugin used to create charts
-function Campaign() {
+function Campaign(props) {
 
   const [campaigns, setCampaignList] = useState([]);
+  const navigate  = useNavigate();
 
   useEffect(() => {
     console.log('useEffect');
-    axios.get(`http://localhost:8080/api/campaignList`)
+    axios.get(`http://localhost:8080/campaigns`)
       .then((response) => {
         console.log(response.data.data);
         setCampaignList(response.data.data);
       })
   }, [])
 
-  function moveToCampaignDetail(value) {
-    console.log("moveToCampaignDetail");
-    console.log(value);
+  const moveToCampaignDetail=(value)=> {
+    console.log("moveToCampaignDetail value : " + value);
+    navigate('/link/campaigns/CampaignDetail', {state:{ campaignId: value}});
   }
 
   return (
@@ -71,12 +73,12 @@ function Campaign() {
                   </thead>
                   <tbody>
                     {campaigns.map((campaign) => (
-                      <tr key={campaign.campaignNum} onClick={moveToCampaignDetail(campaign.campaignNum)}>
+                      <tr key={campaign.campaignId} onClick={()=>{moveToCampaignDetail(campaign.campaignId)}}>
                         <td>{campaign.campaignTitle}</td>
                         <td>{campaign.startDate}</td>
                         <td>{campaign.endDate}</td>
                         <td>{campaign.targetAmount}</td>
-                        <td className="text-right">{campaign.approveYn}</td>
+                        <td className="text-right">{campaign.status}</td>
                       </tr>
                     ))}
 
