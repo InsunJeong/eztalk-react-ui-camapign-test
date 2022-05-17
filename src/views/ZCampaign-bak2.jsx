@@ -29,7 +29,7 @@ import {
 } from "reactstrap";
 import { Link, useNavigate, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import CampaignInsert from "./AddCampaign";
-import CampaignDetail from "./CampaignDetail";
+import CampaignDetail from "./ZCampaignDetail-bak";
 
 // react plugin used to create charts
 function Campaign(props) {

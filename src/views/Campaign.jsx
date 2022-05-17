@@ -18,7 +18,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import CampaignInsert from "./AddCampaign";
-import CampaignDetail from "./CampaignDetail";
+import CampaignDetail from "./ZCampaignDetail-bak";
 
 // react plugin used to create charts
 function Campaign(props) {
