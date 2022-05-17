@@ -1,94 +1,251 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { useEffect, useCallback, useState } from "react";
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+import CampaignService from "../hooks/CampaignService";
 import {
+  Button,
   Card,
   CardHeader,
   CardBody,
+  CardFooter,
   CardTitle,
-  Table,
+  FormGroup,
+  Input,
   Row,
   Col,
+  Table,
 } from "reactstrap";
-import { Link, useNavigate, Navigate, Outlet, Route, Routes } from "react-router-dom";
-import CampaignInsert from "./CampaignInsert";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/esm/locale';
+import CampaignInsert from "./AddCampaign";
 import CampaignDetail from "./CampaignDetail";
 
 // react plugin used to create charts
 function Campaign(props) {
 
-  const [campaigns, setCampaignList] = useState([]);
-  const navigate  = useNavigate();
+  const { id }= useParams();
 
-  useEffect(() => {
-    console.log('useEffect');
-    axios.get(`http://localhost:8080/campaigns`)
-      .then((response) => {
+  let navigate = useNavigate();
+  const initialCampaignState = {
+    campaignId: null,
+    campaignTitle: "",
+    campaignDesc: "",
+    startDate: "",
+    endDate: "",
+    targetAmount: "",
+    leastPayAmount: "",
+    accountStaffId: "",
+    representativeId: ""
+  };
+
+  const [currentCampaign, setCurrentCampaign] = useState(initialCampaignState);
+  const [message, setMessage] = useState("");
+  const [date, setDate] = useState(new Date());
+
+  const getCampaign = id => {
+    CampaignService.get(id)
+      .then(response => {
+        setCurrentCampaign(response.data.data);
         console.log(response.data.data);
-        setCampaignList(response.data.data);
       })
-  }, [])
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    if (id)
+    getCampaign(id);
+  }, [id]);
 
-  const moveToCampaignDetail=(value)=> {
-    console.log("moveToCampaignDetail value : " + value);
-    navigate('/link/campaigns/CampaignDetail', {state:{ campaignId: value}});
-  }
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setCurrentCampaign({ ...currentCampaign, [name]: value });
+  };
+  // const updatePublished = status => {
+  //   var data = {
+  //     id: currentTutorial.id,
+  //     title: currentTutorial.title,
+  //     description: currentTutorial.description,
+  //     published: status
+  //   };
+  //   TutorialDataService.update(currentTutorial.id, data)
+  //     .then(response => {
+  //       setCurrentTutorial({ ...currentTutorial, published: status });
+  //       console.log(response.data);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+  // };
+
+  const updateCampaign = () => {
+    CampaignService.update(currentCampaign.campaignId, currentCampaign)
+      .then(response => {
+        console.log(response.data);
+        setMessage("The tutorial was updated successfully!");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  const deleteCampaign = () => {
+    CampaignService.remove(currentCampaign.campaignId)
+      .then(response => {
+        console.log(response.data.data);
+        // navigate("/tutorials");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const approveCampaign = () => {
+    CampaignService.approve(currentCampaign.campaignId)
+      .then(response => {
+        console.log(response.data.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const stopCampaign = () => {
+    CampaignService.stop(currentCampaign.campaignId)
+      .then(response => {
+        console.log(response.data.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const cancelCampaign = () => {
+    CampaignService.cancel(currentCampaign.campaignId)
+      .then(response => {
+        console.log(response.data.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
 
   return (
-    <>
+<>
       <div className="content">
         <Row>
-          <Col md="12">
-            <Card>
+          <Col md="10">
+            <Card className="campaign-form">
               <CardHeader>
-                <CardTitle tag="h4">캠페인 목록</CardTitle>
+                <CardTitle tag="h5">캠페인 등록</CardTitle>
               </CardHeader>
               <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th>캠페인명</th>
-                      <th>캠페인 시작일자</th>
-                      <th>캠페인 종료일자</th>
-                      <th>목표금액</th>
-                      <th className="text-right">캠페인 상태</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {campaigns.map((campaign) => (
-                      <tr key={campaign.campaignId} onClick={()=>{moveToCampaignDetail(campaign.campaignId)}}>
-                        <td>{campaign.campaignTitle}</td>
-                        <td>{campaign.startDate}</td>
-                        <td>{campaign.endDate}</td>
-                        <td>{campaign.targetAmount}</td>
-                        <td className="text-right">{campaign.status}</td>
-                      </tr>
-                    ))}
+                <Row>
+                  <Col className="pr-1" md="10">
+                    <FormGroup>
+                      <label>캠페인명</label>
+                      <Input type="text" name="campaignTitle" required placeholder="aaaaa" value={currentCampaign.campaignTitle}
+                        onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="pr-1" md="10">
+                    <FormGroup>
+                      <label>캠페인 내용</label>
+                      <Input type="textarea" name="campaignDesc" required placeholder="aaaaa" value={currentCampaign.campaignDesc} onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pl-1" md="5">
+                    <FormGroup>
+                      <label>캠페인 시작일자</label>
+                      <DatePicker
+                        name="startDate"
+                        type="date"
+                        dateFormat="yyyy-MM-dd"
+                        locale={ko}
+                        value={date.toString()}
+                        selected={date}
+                        onChange={date => handleInputChange({ target: { value: date, name: 'startDate' } })} />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pl-1" md="5">
+                    <FormGroup>
+                      <label>캠페인 종료일자</label>
+                      <DatePicker
+                        name="endDate"
+                        type="date"
+                        dateFormat="yyyy-MM-dd"
+                        locale={ko}
+                        selected ={date}
+                        onChange={date => handleInputChange({ target: { value: date, name: 'endDate' } })} />
 
-                  </tbody>
-                </Table>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="pl-1" md="5">
+                    <FormGroup>
+                      <label>목표금액</label>
+                      <Input type="number" name="targetAmount" placeholder="aaaaa" value={currentCampaign.targetAmount} onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pr-1" md="5">
+                    <FormGroup>
+                      <label>최소 납부금액</label>
+                      <Input type="number" name="leastPayAmount" placeholder="aaaaa" value={currentCampaign.leastPayAmount} onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="pr-1" md="5">
+                    <FormGroup>
+                      <label>총무 ID</label>
+                      <Input type="text" name="accountStaffId" placeholder="aaaaa" value={currentCampaign.accountStaffId} onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pr-1" md="5">
+                    <FormGroup>
+                      <label>대표 ID</label>
+                      <Input type="text" name="representativeId" placeholder="aaaaa" value={currentCampaign.representativeId} onChange={handleInputChange} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                <div className="update ml-auto mr-auto">
+                    <Button className="btn-round" color="primary" type="button" onClick={updateCampaign}>캠페인 수정</Button>
+                    <Button className="btn-round" color="primary" type="button" onClick={deleteCampaign}>캠페인 삭제</Button>
+                    <Button className="btn-round" color="primary" type="button" onClick={approveCampaign}>캠페인 승인</Button>
+                    <Button className="btn-round" color="primary" type="button" onClick={stopCampaign}>캠페인 중지</Button>
+                    <Button className="btn-round" color="primary" type="button" onClick={cancelCampaign}>캠페인 취소</Button>
+
+                  {/* {(() => {
+                    if (campaign.status == '00' && disabled) {
+                      return (
+                        <p> <Button className="btn-round" color="primary" type="button" onClick={updateCampaign}>캠페인 수정</Button>
+                          <Button className="btn-round" color="primary" type="button" onClick={deleteCampaign}>캠페인 삭제</Button>
+                          <Button className="btn-round" color="primary" type="button" onClick={approveCampaign}>캠페인 승인</Button>
+                        </p>
+                      )
+                    }
+                    if (!disabled) {
+                      return (
+                        <p> <Button className="btn-round" color="primary" type="button" onClick={onClickUpdate}>수정완료</Button>
+                        </p>
+                      )
+                    }
+                    return (
+                      <p>
+                        <Button className="btn-round" color="primary" type="button" onClick={stopCampaign}>캠페인 중지</Button>
+                        <Button className="btn-round" color="primary" type="button" onClick={cancelCampaign}>캠페인 취소</Button>
+                      </p>
+                    )
+                  })()} */}
+                </div>
+              </Row>
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <Link to='/link/campaigns/CampaignInsert'><button className="btn-round btn btn-primary">캠페인등록</button></Link>
       </div>
     </>
   );

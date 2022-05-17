@@ -39,29 +39,124 @@ import {
   Col,
 } from "reactstrap";
 import { values } from "lodash-es";
-import CampaignInsert from "./CampaignInsert";
+import CampaignInsert from "./AddCampaign";
 
 // react plugin used to create charts
 function CampaignDetail(props) {
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  const [campaign, setCampaignInfo] = useState([]);
+  const initialCampaignInfo = {
+    campaignId : null,
+    campaignTitle : null,
+    campaignDesc : null,
+    startDate : new Date(),
+    endDate : new Date(),
+    targetAmount : null,
+    leastPayAmount : null,
+    accountStaffId : null,
+    representativeId : null,
+    status : "00"
+  };
 
-  const location = useLocation();
+  const [campaign, setCampaignInfo] = useState(initialCampaignInfo);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     console.log('useEffect');
     console.log(location.state.campaignId);
+    if (campaign.status) {
+      // console.log(img[0]);
+    }
     axios.get(`http://localhost:8080/campaigns/` + location.state.campaignId)
       .then((response) => {
         console.log(response.data.data);
         setCampaignInfo(response.data.data);
-      })
-  }, [])
 
+
+        console.log('campaignId : ' + campaign.campaignId);
+        console.log('campaignStatus : ' + campaign.status);
+      })
+  }, [campaign.status])
+
+
+  function onClickModify() {
+    console.log("onClickModify");
+    setDisabled(!disabled);
+  }
+
+  function onClickUpdate() {
+    console.log("onClickUpdate");
+
+    const {
+      campaignTitle,
+      campaignDesc,
+      startDate,
+      endDate,
+      targetAmount,
+      leastPayAmount,
+      accountStaffId,
+      representativeId
+    } = values;
+
+    axios.patch(`http://localhost:8080/campaigns/` + location.state.campaignId, {
+      campaignTitle,
+      campaignDesc,
+      startDate,
+      endDate,
+      targetAmount,
+      leastPayAmount,
+      accountStaffId,
+      representativeId
+    })
+      .then((response) => {
+        console.log(response.data.data);
+        setCampaignInfo(response.data.data);
+      })
+  }
+
+  function onClickDelete() {
+    console.log("onClickDelete");
+    axios.delete(`http://localhost:8080/campaigns/` + location.state.campaignId)
+      .then((response) => {
+        console.log(response.data.data);
+        setCampaignInfo(response.data.data);
+      })
+  }
+
+  function onClickApprove() {
+    console.log("onClickApprove");
+    axios.patch(`http://localhost:8080/campaigns/` + location.state.campaignId + '/approve')
+      .then((response) => {
+        console.log(response.data.data);
+        alert(response.data.data);
+        // setCampaignInfo(response.data.data);
+      })
+  }
+
+  function onClickStop() {
+    console.log("onClickApprove");
+    axios.patch(`http://localhost:8080/campaigns/` + location.state.campaignId + '/stop')
+      .then((response) => {
+        console.log(response.data.data);
+        alert(response.data.data);
+        // setCampaignInfo(response.data.data);
+      })
+  }
+
+  function onClickCancel() {
+    console.log("onClickApprove");
+    axios.patch(`http://localhost:8080/campaigns/` + location.state.campaignId + '/cancel')
+      .then((response) => {
+        console.log(response.data.data);
+        alert(response.data.data);
+        // setCampaignInfo(response.data.data);
+      })
+  }
 
   function CreateCampaignFormik() {
     return (
@@ -97,7 +192,7 @@ function CampaignDetail(props) {
                 <Col className="pr-1" md="10">
                   <FormGroup>
                     <label>캠페인명</label>
-                    <Input disabled type="text" name="campaignTitle" placeholder="aaaaa" value={campaign.campaignTitle}
+                    <Input disabled={disabled} type="text" name="campaignTitle" placeholder="aaaaa" value={{ disabled } ? values.campaignTitle : campaign.campaignTitle}
                       onChange={handleChange} />
                   </FormGroup>
                 </Col>
@@ -106,9 +201,10 @@ function CampaignDetail(props) {
                 <Col className="pr-1" md="10">
                   <FormGroup>
                     <label>캠페인 내용</label>
-                    <Input disabled type="textarea" name="campaignDesc" placeholder="aaaaa" value={campaign.campaignDesc} onChange={handleChange} />
+                    <Input disabled={disabled} type="textarea" name="campaignDesc" placeholder="aaaaa" value={{ disabled } ? values.campaignDesc : campaign.campaignDesc} onChange={handleChange} />
                   </FormGroup>
                 </Col>
+
                 <Col className="pl-1" md="5">
                   <FormGroup>
                     <label>캠페인 시작일자</label>
@@ -117,8 +213,7 @@ function CampaignDetail(props) {
                       name="startDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={campaign.startDate} onChange={date => setFieldValue('startDate', date)} />
-                    {/* <Input type="text" name="startDate" placeholder="aaaaa" onClick={this.DatePickerComponent} value={this.state.startDate} onChange={this.handleStartDateChange}/> */}
+                      selected={values.startDate} onChange={date => setFieldValue('startDate', date)} />
 
                   </FormGroup>
                 </Col>
@@ -130,22 +225,22 @@ function CampaignDetail(props) {
                       name="endDate"
                       dateFormat="yyyy-MM-dd"
                       locale={ko}
-                      selected={campaign.endDate} onChange={date => setFieldValue('endDate', date)} />
-                    {/* <Input type="text" name="endDate" placeholder="aaaaa" value={this.state.endDate} onChange={this.handleEndDateChange} /> */}
+                      selected={values.endDate} onChange={date => setFieldValue('endDate', date)} />
                   </FormGroup>
                 </Col>
+
               </Row>
               <Row>
                 <Col className="pl-1" md="5">
                   <FormGroup>
                     <label>목표금액</label>
-                    <Input disabled type="number" name="targetAmount" placeholder="aaaaa" value={campaign.targetAmount} onChange={handleChange} />
+                    <Input disabled={disabled} type="number" name="targetAmount" placeholder="aaaaa" value={{ disabled } ? values.targetAmount : campaign.targetAmount} onChange={handleChange} />
                   </FormGroup>
                 </Col>
                 <Col className="pr-1" md="5">
                   <FormGroup>
                     <label>최소 납부금액</label>
-                    <Input disabled type="number" name="leastPayAmount" placeholder="aaaaa" value={campaign.leastPayAmount} onChange={handleChange} />
+                    <Input disabled={disabled} type="number" name="leastPayAmount" placeholder="aaaaa" value={{ disabled } ? values.leastPayAmount : campaign.leastPayAmount} onChange={handleChange} />
                   </FormGroup>
                 </Col>
               </Row>
@@ -153,29 +248,40 @@ function CampaignDetail(props) {
                 <Col className="pr-1" md="5">
                   <FormGroup>
                     <label>총무 ID</label>
-                    <Input disabled type="text" name="accountStaffId" placeholder="aaaaa" value={campaign.accountStaffId} onChange={handleChange} />
+                    <Input disabled={disabled} type="text" name="accountStaffId" placeholder="aaaaa" value={{ disabled } ? values.accountStaffId : campaign.accountStaffId} onChange={handleChange} />
                   </FormGroup>
                 </Col>
                 <Col className="pr-1" md="5">
                   <FormGroup>
                     <label>대표 ID</label>
-                    <Input disabled type="text" name="representativeId" placeholder="aaaaa" value={campaign.representativeId} onChange={handleChange} />
+                    <Input disabled={disabled} type="text" name="representativeId" placeholder="aaaaa" value={{ disabled } ? values.representativeId : campaign.representativeId} onChange={handleChange} />
                   </FormGroup>
                 </Col>
               </Row>
               <Row>
                 <div className="update ml-auto mr-auto">
-                  {campaign.status
-                    ? <p> <Button className="btn-round" color="primary" type="submit">수정</Button>
-                      <Button className="btn-round" color="primary" type="submit">삭제</Button>
-                      <Button className="btn-round" color="primary" type="submit">승인</Button>
-                    </p>
-                    :
-                    <p>
-                      <Button className="btn-round" color="primary" type="submit">중지</Button>
-                      <Button className="btn-round" color="primary" type="submit">취소</Button>
-                    </p>
-                  }
+                  {(() => {
+                    if (campaign.status == '00' && disabled) {
+                      return (
+                        <p> <Button className="btn-round" color="primary" type="button" onClick={onClickModify}>캠페인 수정</Button>
+                          <Button className="btn-round" color="primary" type="button" onClick={onClickModify}>캠페인 삭제</Button>
+                          <Button className="btn-round" color="primary" type="button" onClick={onClickApprove}>캠페인 승인</Button>
+                        </p>
+                      )
+                    }
+                    if (!disabled) {
+                      return (
+                        <p> <Button className="btn-round" color="primary" type="button" onClick={onClickUpdate}>수정완료</Button>
+                        </p>
+                      )
+                    }
+                    return (
+                      <p>
+                        <Button className="btn-round" color="primary" type="button" onClick={onClickStop}>캠페인 중지</Button>
+                        <Button className="btn-round" color="primary" type="button" onClick={onClickCancel}>캠페인 취소</Button>
+                      </p>
+                    )
+                  })()}
                 </div>
               </Row>
             </Form>

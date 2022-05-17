@@ -20,9 +20,11 @@
 import Community        from "./Community.jsx";
 import TemporaryChatroom from "./TemporaryChatroom.jsx";
 import RegularChatroom  from "./RegularChatroom.jsx";
+
+import CampaignList     from "./CampaignList.jsx";
+import AddCampaign      from "./AddCampaign.jsx";
 import Campaign         from "./Campaign.jsx";
-import CampaignInsert   from "./CampaignInsert.jsx";
-import CampaignDetail   from "./CampaignDetail.jsx";
+
 import CommunityAccount from "./CommunityAccount.jsx";
 import CommunityAdmin   from "./CommunityAdmin.jsx";
 
@@ -61,25 +63,25 @@ var routes = [
     path: "/campaigns",
     name: "캠페인",
     icon: "nc-icon nc-spaceship",
-    component: Campaign,
+    component: CampaignList,
     layout: "/menu",
     needAuth : false,
   },
   {
-    path: "/campaigns/CampaignInsert",
+    path: "/campaigns/AddCampaign",
     name: "캠페인 등록",
     icon: "nc-icon nc-spaceship",
-    component: CampaignInsert,
+    component: AddCampaign,
     layout: "/link",
     needAuth : false,
     isActive : false,
     notVisible : "true"
   },
   {
-    path: "/campaigns/CampaignDetail",
+    path: "/campaigns/:id",
     name: "캠페인 상세",
     icon: "nc-icon nc-spaceship",
-    component: CampaignDetail,
+    component: Campaign,
     layout: "/link",
     needAuth : false,
     isActive : false,
