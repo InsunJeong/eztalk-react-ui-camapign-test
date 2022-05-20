@@ -35,13 +35,17 @@ function AddCampaign(props) {
 
   const [campaign, setCampaign] = useState(initialCampaignState);
   const [submitted, setSubmitted] = useState(false);
-  const [date, setDate] = useState(new Date());
-
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const handleInputChange = (event) => {
     console.log("event : " + event.target);
     const { name, value } = event.target;
     console.log("name : " + name);
     console.log("value : " + value);
+    if(name == 'startDate')
+      setStartDate(value);
+    else if (name == 'endDate')
+      setEndDate(value);
     setCampaign({ ...campaign, [name]: value });
   };
 
@@ -106,8 +110,7 @@ function AddCampaign(props) {
                         type="date"
                         dateFormat="yyyy-MM-dd"
                         locale={ko}
-                        value={date.toString()}
-                        selected={date}
+                        selected={startDate}
                         onChange={date => handleInputChange({ target: { value: date, name: 'startDate' } })} />
                     </FormGroup>
                   </Col>
@@ -119,7 +122,7 @@ function AddCampaign(props) {
                         type="date"
                         dateFormat="yyyy-MM-dd"
                         locale={ko}
-                        selected ={date}
+                        selected={endDate}
                         onChange={date => handleInputChange({ target: { value: date, name: 'endDate' } })} />
 
                     </FormGroup>

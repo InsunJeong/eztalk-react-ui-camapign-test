@@ -19,7 +19,7 @@ function CampaignList(props) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchTitle, setSearchTitle] = useState("");
 
-  const {authUser} = props;
+  const { authUser } = props;
 
   useEffect(() => {
     retrieveCampaigns();
@@ -72,23 +72,6 @@ function CampaignList(props) {
   return (
     <>
       <div className="content">
-      {/* <div className="col-md-6">
-        <h4>Tutorials List</h4>
-        <ul className="list-group">
-          {campaigns &&
-            campaigns.map((campaign, index) => (
-              <li
-                className={
-                  "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-                onClick={() => setActiveCampaign(campaign, index)}
-                key={index}
-              >
-                {campaign.campaignTitle}
-              </li>
-            ))}
-        </ul>
-      </div> */}
         <Row>
           <Col md="12">
             <Card>
@@ -115,11 +98,8 @@ function CampaignList(props) {
                         <td>{campaign.endDate}</td>
                         <td>{campaign.targetAmount}</td>
                         <td>{campaign.status}</td>
-                        <td className="text-right"><Link
-                          to={"/link/campaigns/" + campaign.campaignId}
-                          className="badge badge-warning"
-                        >
-                          Edit
+                        <td className="text-right"><Link to={"/link/campaigns/" + campaign.campaignId} className="badge badge-warning">
+                          상세보기
                         </Link></td>
                       </tr>
                     ))}

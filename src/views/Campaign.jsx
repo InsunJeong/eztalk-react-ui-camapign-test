@@ -35,12 +35,14 @@ function Campaign(props) {
     targetAmount: "",
     leastPayAmount: "",
     accountStaffId: "",
-    representativeId: ""
+    representativeId: "",
+    status: ""
   };
 
   const [currentCampaign, setCurrentCampaign] = useState(initialCampaignState);
   const [message, setMessage] = useState("");
   const [date, setDate] = useState(new Date());
+  const [disabled, setDisabled] = useState(true);
 
   const getCampaign = id => {
     CampaignService.get(id)
@@ -129,6 +131,10 @@ function Campaign(props) {
       });
   };
 
+  const changeUpdateForm = () => {
+    setDisabled(!disabled);
+  }
+
   return (
 <>
       <div className="content">
@@ -143,7 +149,7 @@ function Campaign(props) {
                   <Col className="pr-1" md="10">
                     <FormGroup>
                       <label>캠페인명</label>
-                      <Input type="text" name="campaignTitle" required placeholder="aaaaa" value={currentCampaign.campaignTitle}
+                      <Input type="text" disabled={disabled} name="campaignTitle" required placeholder="aaaaa" value={currentCampaign.campaignTitle}
                         onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
@@ -152,13 +158,14 @@ function Campaign(props) {
                   <Col className="pr-1" md="10">
                     <FormGroup>
                       <label>캠페인 내용</label>
-                      <Input type="textarea" name="campaignDesc" required placeholder="aaaaa" value={currentCampaign.campaignDesc} onChange={handleInputChange} />
+                      <Input type="textarea" disabled={disabled} name="campaignDesc" required placeholder="aaaaa" value={currentCampaign.campaignDesc} onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
                   <Col className="pl-1" md="5">
                     <FormGroup>
                       <label>캠페인 시작일자</label>
                       <DatePicker
+                        disabled={disabled}
                         name="startDate"
                         type="date"
                         dateFormat="yyyy-MM-dd"
@@ -172,6 +179,7 @@ function Campaign(props) {
                     <FormGroup>
                       <label>캠페인 종료일자</label>
                       <DatePicker
+                        disabled={disabled}
                         name="endDate"
                         type="date"
                         dateFormat="yyyy-MM-dd"
@@ -186,13 +194,13 @@ function Campaign(props) {
                   <Col className="pl-1" md="5">
                     <FormGroup>
                       <label>목표금액</label>
-                      <Input type="number" name="targetAmount" placeholder="aaaaa" value={currentCampaign.targetAmount} onChange={handleInputChange} />
+                      <Input type="number" disabled={disabled} name="targetAmount" placeholder="aaaaa" value={currentCampaign.targetAmount} onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
                   <Col className="pr-1" md="5">
                     <FormGroup>
                       <label>최소 납부금액</label>
-                      <Input type="number" name="leastPayAmount" placeholder="aaaaa" value={currentCampaign.leastPayAmount} onChange={handleInputChange} />
+                      <Input type="number" disabled={disabled} name="leastPayAmount" placeholder="aaaaa" value={currentCampaign.leastPayAmount} onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -200,36 +208,31 @@ function Campaign(props) {
                   <Col className="pr-1" md="5">
                     <FormGroup>
                       <label>총무 ID</label>
-                      <Input type="text" name="accountStaffId" placeholder="aaaaa" value={currentCampaign.accountStaffId} onChange={handleInputChange} />
+                      <Input type="text" disabled={disabled} name="accountStaffId" placeholder="aaaaa" value={currentCampaign.accountStaffId} onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
                   <Col className="pr-1" md="5">
                     <FormGroup>
                       <label>대표 ID</label>
-                      <Input type="text" name="representativeId" placeholder="aaaaa" value={currentCampaign.representativeId} onChange={handleInputChange} />
+                      <Input type="text" disabled={disabled} name="representativeId" placeholder="aaaaa" value={currentCampaign.representativeId} onChange={handleInputChange} />
                     </FormGroup>
                   </Col>
                 </Row>
                 <Row>
                 <div className="update ml-auto mr-auto">
-                    <Button className="btn-round" color="primary" type="button" onClick={updateCampaign}>캠페인 수정</Button>
-                    <Button className="btn-round" color="primary" type="button" onClick={deleteCampaign}>캠페인 삭제</Button>
-                    <Button className="btn-round" color="primary" type="button" onClick={approveCampaign}>캠페인 승인</Button>
-                    <Button className="btn-round" color="primary" type="button" onClick={stopCampaign}>캠페인 중지</Button>
-                    <Button className="btn-round" color="primary" type="button" onClick={cancelCampaign}>캠페인 취소</Button>
-
-                  {/* {(() => {
-                    if (campaign.status == '00' && disabled) {
+                {(() => {
+                    if (disabled) {
                       return (
-                        <p> <Button className="btn-round" color="primary" type="button" onClick={updateCampaign}>캠페인 수정</Button>
+                        <p>
+                          <Button className="btn-round" color="primary" type="button" onClick={changeUpdateForm}>캠페인 수정</Button>
                           <Button className="btn-round" color="primary" type="button" onClick={deleteCampaign}>캠페인 삭제</Button>
                           <Button className="btn-round" color="primary" type="button" onClick={approveCampaign}>캠페인 승인</Button>
                         </p>
                       )
                     }
-                    if (!disabled) {
+                    else if (!disabled) {
                       return (
-                        <p> <Button className="btn-round" color="primary" type="button" onClick={onClickUpdate}>수정완료</Button>
+                        <p> <Button className="btn-round" color="primary" type="button" onClick={updateCampaign}>수정완료</Button>
                         </p>
                       )
                     }
@@ -239,7 +242,7 @@ function Campaign(props) {
                         <Button className="btn-round" color="primary" type="button" onClick={cancelCampaign}>캠페인 취소</Button>
                       </p>
                     )
-                  })()} */}
+                  })()}
                 </div>
               </Row>
               </CardBody>
